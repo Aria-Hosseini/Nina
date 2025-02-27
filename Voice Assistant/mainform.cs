@@ -5,13 +5,13 @@ using System.Windows.Forms;
 
 namespace Voice_Assistant
 {
-    public partial class Form1 : Form
+    public partial class mainform : Form
     {
         SpeechRecognitionEngine RecognitionEngine;
         SpeechSynthesizer Synthesizer;
         bool isRecognizing = false; 
 
-        public Form1()
+        public mainform()
         {
             InitializeComponent();
 
@@ -22,7 +22,8 @@ namespace Voice_Assistant
 
             string[] textStrings = new[] { "Hi", "Hello", "How are you", "What's your name", "Good morning",
                 "Tell me a joke", "Goodbye", "What time is it", "Sing a song",
-                "Tell me something interesting", "I love you"};
+                "Tell me something interesting", "I love you","Good night","Good evening","Good afternoon",
+                "Good evening"};
             Choices choices = new Choices(textStrings);
             GrammarBuilder grammarBuilder = new GrammarBuilder(choices);
             Grammar grammar = new Grammar(grammarBuilder);
@@ -33,22 +34,20 @@ namespace Voice_Assistant
 
         private void btnstart_Click(object sender, EventArgs e)
         {
-            if (isRecognizing) 
+            if (isRecognizing)
             {
-                MessageBox.Show("Recognition is already in progress.");
-                return;
+                RecognitionEngine.RecognizeAsyncStop();
+                isRecognizing = false;
             }
 
             try
             {
-                
                 RecognitionEngine.RecognizeAsync(RecognizeMode.Multiple);
                 isRecognizing = true; 
                 btnstop.Enabled = true;
             }
             catch (InvalidOperationException ex)
             {
-                
                 MessageBox.Show($"Error: {ex.Message}");
             }
         }
@@ -86,7 +85,17 @@ namespace Voice_Assistant
                     break;
                 case "Good morning":
                     richTextBox1.AppendText($"{Environment.NewLine}Good morning");
-                    Synthesizer.Speak("Good morning! How can I help you?");
+
+                    int currentHour = DateTime.Now.Hour;
+
+                    if (currentHour >= 5 && currentHour < 12) 
+                    {
+                        Synthesizer.Speak("Good morning! Hope you have a fantastic day!");
+                    }
+                    else
+                    {
+                        Synthesizer.Speak("It's not morning right now, but I hope you're having a great time!");
+                    }
                     break;
                 case "Tell me a joke":
                     richTextBox1.AppendText($"{Environment.NewLine}Tell me a joke");
@@ -109,12 +118,66 @@ namespace Voice_Assistant
 
                 case "Tell me something interesting":
                     richTextBox1.AppendText($"{Environment.NewLine}Tell me something interesting");
-                    Synthesizer.Speak("Did you know honey never spoils? Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3000 years old and still perfectly edible.");
+
+                    string[] interestingFacts = new string[]
+                    {
+                        "Did you know honey never spoils? Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3000 years old and still perfectly edible.",
+                        "A group of flamingos is called a 'flamboyance'.",
+                        "Bananas are berries, but strawberries aren't.",
+                        "Did you know octopuses have three hearts and blue blood?",
+                        "A small child could swim through the veins of a blue whale, it's that big!",
+                        "The Eiffel Tower can grow by up to 6 inches during the summer due to the expansion of iron in the heat.",
+                        "Some turtles can breathe through their butts!"
+                    };
+
+                    Random rand = new Random();
+                    string randomFact = interestingFacts[rand.Next(interestingFacts.Length)];
+
+                    Synthesizer.Speak(randomFact);
                     break;
 
                 case "I love you":
                     richTextBox1.AppendText($"{Environment.NewLine}I love you");
                     Synthesizer.Speak("Oh wow, that's sweet! I appreciate it.");
+                    break;
+                case "Good afternoon":
+                    richTextBox1.AppendText($"{Environment.NewLine}Good afternoon");
+                    int currentHoura = DateTime.Now.Hour;
+
+                    if (currentHoura >= 12 && currentHoura < 16)
+                    {
+                        Synthesizer.Speak("Good afternoon! How can I help you?");
+                    }
+                    else
+                    {
+                        Synthesizer.Speak("It's not afternoon right now, but I hope you're having a great time!");
+                    }
+                    break;
+                case "Good evening":
+                    richTextBox1.AppendText($"{Environment.NewLine}Good evening");
+                    int currentHoure = DateTime.Now.Hour;
+
+                    if (currentHoure >= 16 && currentHoure < 18)
+                    {
+                        Synthesizer.Speak("Good evening! What can I do for you?");
+                    }
+                    else
+                    {
+                        Synthesizer.Speak("It's not evening right now, but I hope you're having a great time!");
+                    }
+                    break;
+                case "Good night":
+                    richTextBox1.AppendText($"{Environment.NewLine}Good night");
+                    int currentHourn = DateTime.Now.Hour;
+
+                    if (currentHourn >= 18 && currentHourn < 24)
+                    {
+                        Synthesizer.Speak("Good night! What can I do for you?");
+                    }
+                    else
+                    {
+                        Synthesizer.Speak("It's not night right now, but I hope you're having a great time!");
+                    }
                     break;
             }
         }
