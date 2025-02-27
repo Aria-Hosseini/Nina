@@ -9,7 +9,7 @@ namespace Voice_Assistant
     {
         SpeechRecognitionEngine RecognitionEngine;
         SpeechSynthesizer Synthesizer;
-        bool isRecognizing = false; 
+        bool isRecognizing = false;
 
         public mainform()
         {
@@ -23,7 +23,8 @@ namespace Voice_Assistant
             string[] textStrings = new[] { "Hi", "Hello", "How are you", "What's your name", "Good morning",
                 "Tell me a joke", "Goodbye", "What time is it", "Sing a song",
                 "Tell me something interesting", "I love you","Good night","Good evening","Good afternoon",
-                "Good evening"};
+                "Good evening","Open camera","Open file manager","Open Chrome","Open Firefox",
+                "Open Command Prompt","Open CMD"};
             Choices choices = new Choices(textStrings);
             GrammarBuilder grammarBuilder = new GrammarBuilder(choices);
             Grammar grammar = new Grammar(grammarBuilder);
@@ -43,7 +44,7 @@ namespace Voice_Assistant
             try
             {
                 RecognitionEngine.RecognizeAsync(RecognizeMode.Multiple);
-                isRecognizing = true; 
+                isRecognizing = true;
                 btnstop.Enabled = true;
             }
             catch (InvalidOperationException ex)
@@ -57,7 +58,7 @@ namespace Voice_Assistant
             if (isRecognizing)
             {
                 RecognitionEngine.RecognizeAsyncStop();
-                isRecognizing = false; 
+                isRecognizing = false;
                 btnstop.Enabled = false;
             }
         }
@@ -67,6 +68,7 @@ namespace Voice_Assistant
             string text = e.Result.Text;
             switch (text)
             {
+                //مکالمه با ربات
                 case "Hi":
                     richTextBox1.AppendText($"{Environment.NewLine}Hi");
                     Synthesizer.Speak("Hello");
@@ -88,7 +90,7 @@ namespace Voice_Assistant
 
                     int currentHour = DateTime.Now.Hour;
 
-                    if (currentHour >= 5 && currentHour < 12) 
+                    if (currentHour >= 5 && currentHour < 12)
                     {
                         Synthesizer.Speak("Good morning! Hope you have a fantastic day!");
                     }
@@ -179,6 +181,76 @@ namespace Voice_Assistant
                         Synthesizer.Speak("It's not night right now, but I hope you're having a great time!");
                     }
                     break;
+                    //بازکردن برنامه ها
+                case "Open camera":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open camera");
+                    Synthesizer.Speak("Opening camera...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("microsoft.windows.camera:");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open the camera.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open file manager":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open file manager");
+                    Synthesizer.Speak("Opening file manager...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("explorer.exe");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open the file manager.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open Chrome":
+                    richTextBox1.AppendText($"{Environment.NewLine}Opening Chrome");
+                    Synthesizer.Speak("Opening Google Chrome...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("chrome.exe"); 
+                    }
+                    catch (Exception)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open Chrome.");
+                    }
+                    break;
+                case "Open Firefox":
+                    richTextBox1.AppendText($"{Environment.NewLine}Opening Firefox");
+                    Synthesizer.Speak("Opening Mozilla Firefox...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("firefox.exe"); 
+                    }
+                    catch (Exception)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open Firefox.");
+                    }
+                    break;
+                case "Open Command Prompt":
+                case "Open CMD":
+                    richTextBox1.AppendText($"{Environment.NewLine}Opening Command Prompt");
+                    Synthesizer.Speak("Opening Command Prompt...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("cmd.exe");
+                    }
+                    catch (Exception)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open Command Prompt.");
+                    }
+                    break;
+
             }
         }
 
@@ -189,7 +261,7 @@ namespace Voice_Assistant
 
         private void btnminimize_Click(object sender, EventArgs e)
         {
-            this.WindowState =(FormWindowState.Minimized);
+            this.WindowState = (FormWindowState.Minimized);
         }
     }
 }
