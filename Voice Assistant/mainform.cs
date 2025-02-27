@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Speech.Recognition;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
@@ -24,7 +25,7 @@ namespace Voice_Assistant
                 "Tell me a joke", "Goodbye", "What time is it", "Sing a song",
                 "Tell me something interesting", "I love you","Good night","Good evening","Good afternoon",
                 "Good evening","Open camera","Open file manager","Open Chrome","Open Firefox",
-                "Open Command Prompt","Open CMD"};
+                "Open Command Prompt","Open CMD","Who are you"};
             Choices choices = new Choices(textStrings);
             GrammarBuilder grammarBuilder = new GrammarBuilder(choices);
             Grammar grammar = new Grammar(grammarBuilder);
@@ -39,6 +40,9 @@ namespace Voice_Assistant
             {
                 RecognitionEngine.RecognizeAsyncStop();
                 isRecognizing = false;
+                lblStatus.Text = "Not Listening";
+                lblStatus.ForeColor = Color.Red;
+                return;
             }
 
             try
@@ -46,6 +50,8 @@ namespace Voice_Assistant
                 RecognitionEngine.RecognizeAsync(RecognizeMode.Multiple);
                 isRecognizing = true;
                 btnstop.Enabled = true;
+                lblStatus.Text = "listening...";
+                lblStatus.ForeColor = Color.Green;
             }
             catch (InvalidOperationException ex)
             {
@@ -60,6 +66,8 @@ namespace Voice_Assistant
                 RecognitionEngine.RecognizeAsyncStop();
                 isRecognizing = false;
                 btnstop.Enabled = false;
+                lblStatus.Text = "Not Listening";
+                lblStatus.ForeColor = Color.Red;
             }
         }
 
@@ -83,7 +91,11 @@ namespace Voice_Assistant
                     break;
                 case "What's your name":
                     richTextBox1.AppendText($"{Environment.NewLine}What's your name");
-                    Synthesizer.Speak("I'm your voice assistant");
+                    Synthesizer.Speak("I'm Ka-veed, your voice assistant");
+                    break;
+                case "Who are you":
+                    richTextBox1.AppendText($"{Environment.NewLine}Who are you");
+                    Synthesizer.Speak("I'm Ka-veed, your voice assistant");
                     break;
                 case "Good morning":
                     richTextBox1.AppendText($"{Environment.NewLine}Good morning");
@@ -262,6 +274,12 @@ namespace Voice_Assistant
         private void btnminimize_Click(object sender, EventArgs e)
         {
             this.WindowState = (FormWindowState.Minimized);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.WindowState = (FormWindowState.Minimized);
+
         }
     }
 }
