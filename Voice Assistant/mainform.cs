@@ -25,7 +25,9 @@ namespace Voice_Assistant
                 "Tell me a joke", "Goodbye", "What time is it", "Sing a song",
                 "Tell me something interesting", "I love you","Good night","Good evening","Good afternoon",
                 "Good evening","Open camera","Open file manager","Open Chrome","Open Firefox",
-                "Open Command Prompt","Open CMD","Who are you"};
+                "Open Command Prompt","Open CMD","Who are you","Open calculator","Open calcu","Open Edge",
+                "Open email","Open start","Open Word","Open PowerPoint","Open Excel","Open VS Code",
+                "Open Visual Studio"};
             Choices choices = new Choices(textStrings);
             GrammarBuilder grammarBuilder = new GrammarBuilder(choices);
             Grammar grammar = new Grammar(grammarBuilder);
@@ -193,7 +195,7 @@ namespace Voice_Assistant
                         Synthesizer.Speak("It's not night right now, but I hope you're having a great time!");
                     }
                     break;
-                    //بازکردن برنامه ها
+                //بازکردن برنامه ها
                 case "Open camera":
                     richTextBox1.AppendText($"{Environment.NewLine}Open camera");
                     Synthesizer.Speak("Opening camera...");
@@ -228,7 +230,7 @@ namespace Voice_Assistant
 
                     try
                     {
-                        System.Diagnostics.Process.Start("chrome.exe"); 
+                        System.Diagnostics.Process.Start("chrome.exe");
                     }
                     catch (Exception)
                     {
@@ -241,7 +243,7 @@ namespace Voice_Assistant
 
                     try
                     {
-                        System.Diagnostics.Process.Start("firefox.exe"); 
+                        System.Diagnostics.Process.Start("firefox.exe");
                     }
                     catch (Exception)
                     {
@@ -260,6 +262,131 @@ namespace Voice_Assistant
                     catch (Exception)
                     {
                         Synthesizer.Speak("Sorry, I couldn't open Command Prompt.");
+                    }
+                    break;
+                case "Open calculator":
+                case "Open calcu":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open calculator");
+                    Synthesizer.Speak("Opening calculator...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("calc.exe");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open the calculator.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open Edge":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open Edge");
+                    Synthesizer.Speak("Opening Microsoft Edge...");
+                    try
+                    {
+                        System.Diagnostics.Process.Start("msedge.exe");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open Edge.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open email":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open email");
+                    Synthesizer.Speak("Opening your email...");
+                    try
+                    {
+                        System.Diagnostics.Process.Start("mailto:");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open the email app.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open start":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open start");
+                    Synthesizer.Speak("Opening the start menu...");
+                    try
+                    {
+                        SendKeys.SendWait("{ESC}");
+                        SendKeys.SendWait("^{ESC}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open the start menu.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open Word":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open Word");
+                    Synthesizer.Speak("Opening Microsoft Word...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("winword.exe");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open Word.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open PowerPoint":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open PowerPoint");
+                    Synthesizer.Speak("Opening Microsoft PowerPoint...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("powerpnt.exe");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open PowerPoint.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open Excel":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open Excel");
+                    Synthesizer.Speak("Opening Microsoft Excel...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("excel.exe");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open Excel.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open VS Code":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open VS Code");
+                    Synthesizer.Speak("Opening Visual Studio Code...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("Code.exe");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open VS Code.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open Visual Studio":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open Visual Studio");
+                    Synthesizer.Speak("Opening Visual Studio...");
+
+                    try
+                    {
+                        System.Diagnostics.Process.Start("devenv.exe");
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open Visual Studio.");
+                        MessageBox.Show($"Error: {ex.Message}");
                     }
                     break;
 
