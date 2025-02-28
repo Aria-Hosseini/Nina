@@ -3,6 +3,9 @@ using System.Drawing;
 using System.Speech.Recognition;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
+using AForge.Video;
+using AForge.Video.DirectShow;
+using InstalledPrograms;
 
 namespace Voice_Assistant
 {
@@ -27,7 +30,7 @@ namespace Voice_Assistant
                 "Good evening","Open camera","Open file manager","Open Chrome","Open Firefox",
                 "Open Command Prompt","Open CMD","Who are you","Open calculator","Open calcu","Open Edge",
                 "Open email","Open start","Open Word","Open PowerPoint","Open Excel","Open VS Code",
-                "Open Visual Studio"};
+                "Open Visual Studio","Take a picture","Open apps"};
             Choices choices = new Choices(textStrings);
             GrammarBuilder grammarBuilder = new GrammarBuilder(choices);
             Grammar grammar = new Grammar(grammarBuilder);
@@ -210,6 +213,36 @@ namespace Voice_Assistant
                         MessageBox.Show($"Error: {ex.Message}");
                     }
                     break;
+                case "Take a picture":
+                    richTextBox1.AppendText($"{Environment.NewLine}Take a picture");
+                    Synthesizer.Speak("Taking a picture...");
+                    try
+                    {
+                        var videoDevices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+                        if (videoDevices.Count == 0)
+                        {
+                            Synthesizer.Speak("No camera found.");
+                            MessageBox.Show("No camera device detected.");
+                            return;
+                        }
+
+                        var videoSource = new VideoCaptureDevice(videoDevices[0].MonikerString);
+                        videoSource.NewFrame += (s, ev) =>
+                        {
+                            Bitmap image = (Bitmap)ev.Frame.Clone();
+                            string savePath = $@"C:\Users\<Username>\Pictures\Photo_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.jpg";
+                            image.Save(savePath);
+                            Synthesizer.Speak("Picture saved.");
+                            videoSource.SignalToStop(); 
+                        };
+                        videoSource.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't take a picture.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
                 case "Open file manager":
                     richTextBox1.AppendText($"{Environment.NewLine}Open file manager");
                     Synthesizer.Speak("Opening file manager...");
@@ -389,6 +422,22 @@ namespace Voice_Assistant
                         MessageBox.Show($"Error: {ex.Message}");
                     }
                     break;
+                //انجام عملیات
+                case "Open apps":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open apps");
+                    Synthesizer.Speak("Opening the app list ...");
+                    try
+                    {
+                        Form1 applistForm = new Form1(); 
+                        applistForm.Show(); 
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open the app list .");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+
 
             }
         }
