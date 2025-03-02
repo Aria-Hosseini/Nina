@@ -31,7 +31,7 @@ To run or develop Nina, you’ll need:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/nina-voice-assistant.git
+   git clone https://github.com/Aria-Hosseini/nina-voice-assistant.git
    ```
    (Replace with your repo URL if hosted)
 
@@ -158,7 +158,7 @@ Start Nina and enjoy a voice-powered experience! Questions? Hit me up in Issues.
 
 1. **مخزن رو کلون کنید**:
    ```bash
-   git clone https://github.com/yourusername/nina-voice-assistant.git
+   git clone https://github.com/Aria-Hosseini/nina-voice-assistant.git
    ```
    (اگه پروژه رو توی GitHub داری، آدرسش رو بذار)
 
