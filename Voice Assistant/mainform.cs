@@ -21,8 +21,9 @@ namespace Voice_Assistant
 
             RecognitionEngine = new SpeechRecognitionEngine();
             Synthesizer = new SpeechSynthesizer();
-
+            Synthesizer.SelectVoice("Microsoft Zira Desktop");
             RecognitionEngine.SetInputToDefaultAudioDevice();
+
 
             string[] textStrings = new[] { "Hi", "Hello", "How are you", "What's your name", "Good morning",
                 "Tell me a joke", "Goodbye", "What time is it", "Sing a song",
@@ -30,7 +31,7 @@ namespace Voice_Assistant
                 "Good evening","Open camera","Open file manager","Open Chrome","Open Firefox",
                 "Open Command Prompt","Open CMD","Who are you","Open calculator","Open calcu","Open Edge",
                 "Open email","Open start","Open Word","Open PowerPoint","Open Excel","Open VS Code",
-                "Open Visual Studio","Take a picture","Open apps"};
+                "Open Visual Studio","Take a picture","Open apps","Open telegram","Thank you"};
             Choices choices = new Choices(textStrings);
             GrammarBuilder grammarBuilder = new GrammarBuilder(choices);
             Grammar grammar = new Grammar(grammarBuilder);
@@ -96,11 +97,15 @@ namespace Voice_Assistant
                     break;
                 case "What's your name":
                     richTextBox1.AppendText($"{Environment.NewLine}What's your name");
-                    Synthesizer.Speak("I'm Ka-veed, your voice assistant");
+                    Synthesizer.Speak("I'm Nina, your voice assistant");
                     break;
                 case "Who are you":
                     richTextBox1.AppendText($"{Environment.NewLine}Who are you");
-                    Synthesizer.Speak("I'm Ka-veed, your voice assistant");
+                    Synthesizer.Speak("I'm Nina, your voice assistant");
+                    break;
+                case "Thank you":
+                    richTextBox1.AppendText($"{Environment.NewLine}Thank you");
+                    Synthesizer.Speak("Your welcome.");
                     break;
                 case "Good morning":
                     richTextBox1.AppendText($"{Environment.NewLine}Good morning");
@@ -419,6 +424,20 @@ namespace Voice_Assistant
                     catch (Exception ex)
                     {
                         Synthesizer.Speak("Sorry, I couldn't open Visual Studio.");
+                        MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "Open telegram":
+                    richTextBox1.AppendText($"{Environment.NewLine}Open telegram");
+                    Synthesizer.Speak("Opening telegram...");
+                    try
+                    {
+                        string telegramPath = @"C:\Users\<Username>\AppData\Roaming\Telegram Desktop\Telegram.exe";
+                        System.Diagnostics.Process.Start(telegramPath); 
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't open telegram.");
                         MessageBox.Show($"Error: {ex.Message}");
                     }
                     break;
