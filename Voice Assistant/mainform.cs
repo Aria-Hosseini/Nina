@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Speech.Recognition;
 using System.Speech.Synthesis;
 using System.Windows.Forms;
@@ -31,7 +33,7 @@ namespace Voice_Assistant
                 "Good evening","Open camera","Open file manager","Open Chrome","Open Firefox",
                 "Open Command Prompt","Open CMD","Who are you","Open calculator","Open calcu","Open Edge",
                 "Open email","Open start","Open Word","Open PowerPoint","Open Excel","Open VS Code",
-                "Open Visual Studio","Take a picture","Open apps","Open telegram","Thank you"};
+                "Open Visual Studio","Take a picture","Open apps","Open telegram","Thank you","YouTube downloader"};
             Choices choices = new Choices(textStrings);
             GrammarBuilder grammarBuilder = new GrammarBuilder(choices);
             Grammar grammar = new Grammar(grammarBuilder);
@@ -454,6 +456,69 @@ namespace Voice_Assistant
                     {
                         Synthesizer.Speak("Sorry, I couldn't open the app list .");
                         MessageBox.Show($"Error: {ex.Message}");
+                    }
+                    break;
+                case "YouTube downloader":
+                    richTextBox1.AppendText($"{Environment.NewLine}YouTube downloader");
+                    Synthesizer.Speak("Running YouTube downloader...");
+                    try
+                    {
+                        string pythonPath = @"C:\Users\Markazi.co\AppData\Local\Programs\Python\Python312\python.exe"; // مسیر Python رو درست کن
+                        string scriptPath = Path.Combine(Application.StartupPath, "Scripts", "ytdl.py"); 
+
+                        // چک کردن وجود فایل‌ها
+                        if (!File.Exists(pythonPath))
+                        {
+                            Synthesizer.Speak("Python interpreter not found.");
+                            MessageBox.Show($"Python not found at: {pythonPath}");
+                            return;
+                        }
+
+                        if (!File.Exists(scriptPath))
+                        {
+                            Synthesizer.Speak("YouTube downloader script not found.");
+                            MessageBox.Show($"Script not found at: {scriptPath}");
+                            return;
+                        }
+
+                        ProcessStartInfo startInfo = new ProcessStartInfo
+                        {
+                            FileName = pythonPath,
+                            Arguments = $"\"{scriptPath}\"",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true
+                        };
+
+                        using (Process process = new Process { StartInfo = startInfo })
+                        {
+                            process.Start();
+                            string output = process.StandardOutput.ReadToEnd();
+                            string error = process.StandardError.ReadToEnd();
+                            process.WaitForExit();
+
+                            if (!string.IsNullOrEmpty(error))
+                            {
+                                Synthesizer.Speak("Sorry, there was an error running the YouTube downloader.");
+                                MessageBox.Show($"Python Error: {error}");
+                            }
+                            else if (string.IsNullOrEmpty(output))
+                            {
+                                Synthesizer.Speak("YouTube downloader ran as your commad.");
+                                richTextBox1.AppendText($"{Environment.NewLine}No output from script.");
+                            }
+                            else
+                            {
+                                Synthesizer.Speak("YouTube downloader finished. Check the output.");
+                                richTextBox1.AppendText($"{Environment.NewLine}Output: {output.Trim()}");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Synthesizer.Speak("Sorry, I couldn't run the YouTube downloader.");
+                        MessageBox.Show($"C# Error: {ex.Message}");
                     }
                     break;
 
