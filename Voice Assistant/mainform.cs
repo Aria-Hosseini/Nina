@@ -33,7 +33,8 @@ namespace Voice_Assistant
                 "Good evening","Open camera","Open file manager","Open Chrome","Open Firefox",
                 "Open Command Prompt","Open CMD","Who are you","Open calculator","Open calcu","Open Edge",
                 "Open email","Open start","Open Word","Open PowerPoint","Open Excel","Open VS Code",
-                "Open Visual Studio","Take a picture","Open apps","Open telegram","Thank you","YouTube downloader"};
+                "Open Visual Studio","Take a picture","Open apps","Open telegram","Thank you","YouTube downloader",
+                };
             Choices choices = new Choices(textStrings);
             GrammarBuilder grammarBuilder = new GrammarBuilder(choices);
             Grammar grammar = new Grammar(grammarBuilder);
@@ -521,6 +522,7 @@ namespace Voice_Assistant
                         MessageBox.Show($"C# Error: {ex.Message}");
                     }
                     break;
+                
 
 
             }
